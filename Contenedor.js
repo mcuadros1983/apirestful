@@ -23,7 +23,7 @@ module.exports = class Contenedor {
         } catch (error) {
             return error;
         }
-    }CLEAR
+    } CLEAR
 
     async getById(id) {
         try {
@@ -78,17 +78,18 @@ module.exports = class Contenedor {
     async updateById(id, object) {
         try {
             const array = await this.getAll()
-            let index = array.map(producto => producto.id).indexOf(parseInt(id));
-
-            if (index !== -1) {
-                const eliminado = array.splice(index, 1, { id: parseInt(id), ...object })
-                return array
-            } else {
-                return { error: "producto no encontrado" }
-            }
+            let newArray = array.map(producto => {
+                if (producto.id === parseInt(id)) {
+                    return {
+                        ...producto, title:object.title, price:object.price, thumbnail:object.thumbnail
+                    }
+                }
+                return producto
+            })
+            this.array = newArray
 
         } catch (error) {
-            return null
+            return null 
         }
     }
 }
